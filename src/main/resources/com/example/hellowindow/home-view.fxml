@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #edeff0;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hellowindow.HomeController">
+   <children>
+      <AnchorPane layoutY="100.0" prefHeight="300.0" prefWidth="700.0" style="-fx-background-color: #002e4a;">
+         <children>
+            <Text fill="#e0bf63" layoutX="91.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Java FX">
+               <font>
+                  <Font name="Bodoni MT" size="58.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="140.0" fitWidth="206.0" layoutX="7.0" layoutY="161.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/cookie.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Label layoutX="243.0" layoutY="14.0" prefHeight="87.0" prefWidth="261.0" text="First app">
+         <font>
+            <Font name="Bodoni MT Italic" size="60.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

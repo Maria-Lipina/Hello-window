@@ -1,4 +1,4 @@
-package com.example.hellowindow;
+package com.example.hellowindow.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
