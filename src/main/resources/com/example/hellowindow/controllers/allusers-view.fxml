@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #edeff0;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hellowindow.controllers.AllUsersController">
+   <children>
+      <AnchorPane layoutY="100.0" prefHeight="300.0" prefWidth="700.0" style="-fx-background-color: #002e4a;">
+         <children>
+            <Text fill="#e0bf63" layoutX="175.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of profiles">
+               <font>
+                  <Font name="Bodoni MT" size="58.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <Label layoutX="243.0" layoutY="14.0" prefHeight="87.0" prefWidth="261.0" text="First app">
+         <font>
+            <Font name="Bodoni MT Italic" size="60.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

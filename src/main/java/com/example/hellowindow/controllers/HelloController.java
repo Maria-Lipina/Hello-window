@@ -1,11 +1,19 @@
 package com.example.hellowindow.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.example.hellowindow.HelloApplication;
+import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class HelloController {
 
@@ -34,14 +42,18 @@ public class HelloController {
 
     @FXML
     void initialize() {
-         signIn.setOnAction(actionEvent -> {
-             System.out.println("Sign in button - menu for the authorized");
-         });
+        signIn.setOnAction(actionEvent -> {
+            signIn.getScene().getWindow().hide();
+            new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+        });
         signUp.setOnAction(actionEvent -> {
-            System.out.println("Sign up button - menu for new users");
+            signUp.getScene().getWindow().hide();
+            new ViewLoader().loadView("signup-form-view.fxml", new Stage(), getClass());
+
         });
         seeAllUsers.setOnAction(actionEvent -> {
-            System.out.println("See all users - list of the users saved in database");
+            seeAllUsers.getScene().getWindow().hide();
+            new ViewLoader().loadView("allusers-view.fxml", new Stage(), getClass());
         });
 
     }
