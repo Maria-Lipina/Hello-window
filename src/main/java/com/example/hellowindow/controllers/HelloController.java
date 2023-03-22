@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.example.hellowindow.DatabaseHandler;
 import com.example.hellowindow.HelloApplication;
 import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
@@ -25,11 +26,9 @@ public class HelloController {
 
     @FXML
     private TextField enterLogin;
-    private String login;
 
     @FXML
     private PasswordField enterPassword;
-    private String password;
 
     @FXML
     private Button seeAllUsers;
@@ -43,8 +42,16 @@ public class HelloController {
     @FXML
     void initialize() {
         signIn.setOnAction(actionEvent -> {
-            signIn.getScene().getWindow().hide();
-            new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+
+            String login = enterLogin.getText().trim();
+            int authHash = enterPassword.getText().trim().hashCode();
+
+            if (!login.equals("") && authHash != 0) {
+                if (authCheck(login, authHash)) {
+                    signIn.getScene().getWindow().hide();
+                    new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+                } else System.out.println("Error. Check login or password and try again");
+            } else System.out.println("Empty login and/or password");
         });
         signUp.setOnAction(actionEvent -> {
             signUp.getScene().getWindow().hide();
@@ -56,6 +63,11 @@ public class HelloController {
             new ViewLoader().loadView("allusers-view.fxml", new Stage(), getClass());
         });
 
+    }
+
+    private boolean authCheck (String login, int authHash) {
+        new DatabaseHandler().getDbConnect();
+        return true;
     }
 
 }
