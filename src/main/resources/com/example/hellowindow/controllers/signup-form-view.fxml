@@ -31,12 +31,17 @@
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Button layoutX="246.0" layoutY="226.0" mnemonicParsing="false" text="Save profile and sign in">
+            <Button layoutX="292.0" layoutY="204.0" mnemonicParsing="false" text="Save profile">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <CheckBox layoutX="286.0" layoutY="182.0" mnemonicParsing="false" text="Keep me signed in" textFill="#e0bf63" />
+            <CheckBox layoutX="285.0" layoutY="258.0" mnemonicParsing="false" text="Keep me signed in" textFill="#e0bf63" />
+            <Button contentDisplay="TEXT_ONLY" ellipsisString="" layoutX="417.0" layoutY="150.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" style="-fx-background-color: #002e4a;" text="Generate password" textFill="#e0bf63" underline="true">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <Label layoutX="243.0" layoutY="14.0" prefHeight="87.0" prefWidth="261.0" text="First app">
