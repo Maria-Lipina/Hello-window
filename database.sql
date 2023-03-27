@@ -15,5 +15,4 @@ INSERT INTO jfx.users (firstname, lastname, email)
 SELECT first_name, last_name, email
 from sakila.customer;
 
-UPDATE users
-	SET password_hash = 67890 where id = 1;
+SELECT COUNT(id) FROM users;

@@ -1,12 +1,10 @@
 package com.example.hellowindow;
 
+import com.example.hellowindow.controllers.SignUpController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class HelloApplication extends Application {
     @Override
@@ -15,6 +13,11 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        User sgc = new User();
+        String pass = sgc.passGen(8);
+        int usersCount = new DatabaseHandler().getCount();
+        System.out.println("Кол-во пользователей из бд " + usersCount);
+
+//        launch();
     }
 }

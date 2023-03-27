@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import com.example.hellowindow.DatabaseHandler;
+import com.example.hellowindow.User;
 import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,7 +45,7 @@ public class HelloController {
             int authHash = enterPassword.getText().trim().hashCode();
 
             if (!login.equals("") && authHash != 0) {
-                if (authCheck(login, authHash)) {
+                if (new User().authCheck(login, authHash)) {
                     signIn.getScene().getWindow().hide();
                     new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
                 } else System.out.println("Error. Check login or password and try again");
@@ -62,9 +63,6 @@ public class HelloController {
 
     }
 
-    private boolean authCheck (String login, int authHash) {
-        new DatabaseHandler().connect();
-        return true;
-    }
+
 
 }

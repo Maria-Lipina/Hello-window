@@ -1,28 +1,69 @@
 package com.example.hellowindow;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
-public class DatabaseHandler extends ConfigConst {
+public class DatabaseHandler {
 
     Connection dbConnect;
+    Properties props;
+
+    public DatabaseHandler () {
+
+    }
     public Connection connect() {
-
         try {
-            Properties props = new Properties();
-            props.load(Files.newInputStream(
-                   Path.of("src/main/resources/com/example/hellowindow/assets/database.properties")));
-            dbConnect = DriverManager.getConnection(
-                    (String) props.get("url"), (String) props.get("user"), (String) props.get("password"));
+            if (dbConnect == null || dbConnect.isClosed()) {
+                props = new Properties();
+                props.load(Files.newInputStream(
+                        Path.of("src/main/resources/com/example/hellowindow/assets/database.properties")));
+                dbConnect = DriverManager.getConnection(
+                        (String) props.get("url"), (String) props.get("db_user"), (String) props.get("password"));
+                System.out.println("Connected to MySQL");
+                } }
+                catch (SQLException e) {
+                    System.out.println("SQLException: " + e.getMessage());
+                    System.out.println("SQLState: " + e.getSQLState());
+                    System.out.println("VendorError: " + e.getErrorCode());
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+        return dbConnect;
+    }
 
-            System.out.println("Connected to MySQL");
+    public void close() {
+        try {
+            if (!dbConnect.isClosed()) {
+                dbConnect.close();
+                System.out.println("Reconnected to MySQL");
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+    }
+
+    public int getCount() {
+
+        int res = 0;
+        try {
+            props = new Properties();
+            props.load(Files.newInputStream(
+                    Path.of("src/main/resources/com/example/hellowindow/assets/database.properties")));
+            String statement = String.format("SELECT COUNT(%s) FROM %s",
+                    props.get("user_id"), props.get("user_table"));
+            System.out.println(statement);
+            PreparedStatement prst = connect().prepareStatement(
+                    statement);
+            prst.execute();
+            ResultSet rs = prst.getResultSet();
+            System.out.println(dbConnect.isClosed());
+            res = rs.getInt(1);
 
             dbConnect.close();
         } catch (SQLException e) {
@@ -30,17 +71,20 @@ public class DatabaseHandler extends ConfigConst {
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return dbConnect;
-    }
-
-    public boolean isClose() {
-        try {
-            return dbConnect.isClosed();
-        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        return res;
     }
+
+    /** TODO: обработать это исключение
+     * SELECT COUNT(id) FROM users
+     * Connected to MySQL
+     * false
+     * SQLException: Before start of result set
+     * SQLState: S1000
+     * VendorError: 0
+     * Кол-во пользователей из бд 0
+     */
 
 }
