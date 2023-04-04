@@ -60,10 +60,10 @@ public class DatabaseHandler {
             System.out.println(statement);
             PreparedStatement prst = connect().prepareStatement(
                     statement);
-            prst.execute();
-            ResultSet rs = prst.getResultSet();
-            System.out.println(dbConnect.isClosed());
-            res = rs.getInt(1);
+            ResultSet rs = prst.executeQuery();
+            System.out.println("row: " + rs.first());
+
+
 
             dbConnect.close();
         } catch (SQLException e) {
@@ -77,14 +77,5 @@ public class DatabaseHandler {
         return res;
     }
 
-    /** TODO: обработать это исключение
-     * SELECT COUNT(id) FROM users
-     * Connected to MySQL
-     * false
-     * SQLException: Before start of result set
-     * SQLState: S1000
-     * VendorError: 0
-     * Кол-во пользователей из бд 0
-     */
-
 }
+//Rfr

@@ -3,8 +3,11 @@ package com.example.hellowindow.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 public class AllUsersController {
 
@@ -18,17 +21,22 @@ public class AllUsersController {
     private Button backHome;
 
     @FXML
-    private Button deleteUser1;
+    private Button deleteUser1; //Удалить свой профиль в базовой версии. Или чей-то ещё, если у пользователя права администратора
 
     @FXML
     private Button logOut;
 
     @FXML
     void initialize() {
-        assert backHome != null : "fx:id=\"backHome\" was not injected: check your FXML file 'allusers-view.fxml'.";
-        assert deleteUser1 != null : "fx:id=\"deleteUser1\" was not injected: check your FXML file 'allusers-view.fxml'.";
-        assert logOut != null : "fx:id=\"logOut\" was not injected: check your FXML file 'allusers-view.fxml'.";
+        backHome.setOnAction(actionEvent -> {
+            backHome.getScene().getWindow().hide();
+            new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+        });
+        logOut.setOnAction(actionEvent -> {
+            logOut.getScene().getWindow().hide();
+            new ViewLoader().loadView("hello-view.fxml", new Stage(), getClass());
+        });
 
     }
-    
+
 }
