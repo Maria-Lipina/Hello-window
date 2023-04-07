@@ -2,8 +2,11 @@ package com.example.hellowindow.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 public class HomeController {
 
@@ -25,9 +28,20 @@ public class HomeController {
 
     @FXML
     void initialize() {
-        assert deleteUser != null : "fx:id=\"deleteUser\" was not injected: check your FXML file 'home-view.fxml'.";
-        assert logOut != null : "fx:id=\"logOut\" was not injected: check your FXML file 'home-view.fxml'.";
-        assert seeAllUsers != null : "fx:id=\"seeAllUsers\" was not injected: check your FXML file 'home-view.fxml'.";
+        logOut.setOnAction(actionEvent -> {
+            logOut.getScene().getWindow().hide();
+            new ViewLoader().loadView("hello-view.fxml", new Stage(), getClass());
+            System.out.println("Logged out successfully");
+        });
+        seeAllUsers.setOnAction(actionEvent -> {
+            seeAllUsers.getScene().getWindow().hide();
+            new ViewLoader().loadView("allusers-view.fxml", new Stage(), getClass());
+        });
+        deleteUser.setOnAction(actionEvent -> {
+            seeAllUsers.getScene().getWindow().hide();
+            new ViewLoader().loadView("hello-view.fxml", new Stage(), getClass());
+            System.out.println("Profile successfully deleted");
+        });
 
     }
 

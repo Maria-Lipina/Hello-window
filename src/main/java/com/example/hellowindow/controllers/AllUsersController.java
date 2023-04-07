@@ -35,6 +35,12 @@ public class AllUsersController {
         logOut.setOnAction(actionEvent -> {
             logOut.getScene().getWindow().hide();
             new ViewLoader().loadView("hello-view.fxml", new Stage(), getClass());
+            System.out.println("Logged out successfully");
+        });
+        deleteUser1.setOnAction(actionEvent -> {
+            deleteUser1.getScene().getWindow().hide();
+            new ViewLoader().loadView("hello-view.fxml", new Stage(), getClass());
+            System.out.println("Profile successfully deleted");
         });
 
     }
