@@ -11,22 +11,22 @@
    <children>
       <AnchorPane layoutY="100.0" prefHeight="300.0" prefWidth="700.0" style="-fx-background-color: #002e4a;">
          <children>
-            <TextField fx:id="name" layoutX="45.0" layoutY="40.0" promptText="Login" text="Name">
+            <TextField fx:id="name" layoutX="45.0" layoutY="40.0" promptText="Name">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField fx:id="surname" layoutX="45.0" layoutY="101.0" promptText="Password" text="Surname">
+            <TextField fx:id="surname" layoutX="45.0" layoutY="101.0" promptText="Surname">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField fx:id="email" layoutX="417.0" layoutY="40.0" prefHeight="28.0" prefWidth="224.0" promptText="Password" text="e-mail">
+            <TextField fx:id="email" layoutX="417.0" layoutY="40.0" prefHeight="28.0" prefWidth="224.0" promptText="email">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField fx:id="password" layoutX="417.0" layoutY="101.0" prefHeight="28.0" prefWidth="224.0" promptText="Password" text="Password">
+            <TextField fx:id="password" layoutX="417.0" layoutY="101.0" prefHeight="28.0" prefWidth="224.0" promptText="Password">
                <font>
                   <Font size="18.0" />
                </font>
@@ -37,11 +37,11 @@
                </font>
             </Button>
             <CheckBox fx:id="keepSigned" layoutX="285.0" layoutY="258.0" mnemonicParsing="false" text="Keep me signed in" textFill="#e0bf63" />
-            <Button fx:id="passGenerate" contentDisplay="TEXT_ONLY" ellipsisString="" layoutX="417.0" layoutY="150.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" style="-fx-background-color: #002e4a;" text="Generate password" textFill="#e0bf63" underline="true">
+            <CheckBox fx:id="generatePassword" layoutX="417.0" layoutY="150.0" mnemonicParsing="false" text="Generate password" textFill="#e0bf63" underline="true">
                <font>
                   <Font size="14.0" />
                </font>
-            </Button>
+            </CheckBox>
          </children>
       </AnchorPane>
       <Label layoutX="243.0" layoutY="14.0" prefHeight="87.0" prefWidth="261.0" text="First app">

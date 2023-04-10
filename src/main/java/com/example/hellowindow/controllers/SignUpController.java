@@ -3,6 +3,8 @@ package com.example.hellowindow.controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.example.hellowindow.Auth;
+import com.example.hellowindow.DatabaseHandler;
 import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,7 +30,7 @@ public class SignUpController {
     private TextField name;
 
     @FXML
-    private Button passGenerate;
+    private CheckBox generatePassword;
 
     @FXML
     private TextField password;
@@ -42,6 +44,16 @@ public class SignUpController {
     @FXML
     void initialize() {
         saveProfile.setOnAction(actionEvent -> {
+
+            if (generatePassword != null && generatePassword.isSelected()) {
+                String pass = new Auth().passGen(8);
+                System.out.println(pass);
+                new DatabaseHandler().addUser(
+                        name.getText(), surname.getText(), email.getText(), pass.hashCode());
+            } else {
+                new DatabaseHandler().addUser(
+                        name.getText(), surname.getText(), email.getText(), password.getText().hashCode());
+            }
             saveProfile.getScene().getWindow().hide();
             new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
         });
