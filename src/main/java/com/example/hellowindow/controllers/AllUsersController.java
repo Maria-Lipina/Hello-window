@@ -24,7 +24,7 @@ public class AllUsersController {
     private Button deleteUser1; //Удалить свой профиль в базовой версии. Или чей-то ещё, если у пользователя права администратора
 
     @FXML
-    private Button logOut;
+    private Button logOut1;
 
     @FXML
     void initialize() {
@@ -32,14 +32,14 @@ public class AllUsersController {
             backHome.getScene().getWindow().hide();
             new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
         });
-        logOut.setOnAction(actionEvent -> {
-            logOut.getScene().getWindow().hide();
-            new ViewLoader().loadView("hello-view.fxml", new Stage(), getClass());
+        logOut1.setOnAction(actionEvent -> {
+            logOut1.getScene().getWindow().hide();
+            new ViewLoader().loadView("logout-view.fxml", new Stage(), getClass());
             System.out.println("Logged out successfully");
         });
         deleteUser1.setOnAction(actionEvent -> {
             deleteUser1.getScene().getWindow().hide();
-            new ViewLoader().loadView("hello-view.fxml", new Stage(), getClass());
+            new ViewLoader().loadView("logout-view.fxml", new Stage(), getClass());
             System.out.println("Profile successfully deleted");
         });
 

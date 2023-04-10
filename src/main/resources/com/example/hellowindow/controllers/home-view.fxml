@@ -34,7 +34,7 @@
             <Font name="Bodoni MT Italic" size="60.0" />
          </font>
       </Label>
-      <Button fx:id="logOut" layoutX="616.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: #edeff0;" text="log out" underline="true">
+      <Button fx:id="logOut" layoutX="616.0" layoutY="14.0" mnemonicParsing="false" onAction="#initialize" style="-fx-background-color: #edeff0;" text="log out" underline="true">
          <font>
             <Font size="14.0" />
          </font>

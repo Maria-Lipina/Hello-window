@@ -2,10 +2,13 @@ package com.example.hellowindow.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class SignUpController {
 
@@ -38,14 +41,11 @@ public class SignUpController {
 
     @FXML
     void initialize() {
-        assert email != null : "fx:id=\"email\" was not injected: check your FXML file 'signup-form-view.fxml'.";
-        assert keepSigned != null : "fx:id=\"keepSigned\" was not injected: check your FXML file 'signup-form-view.fxml'.";
-        assert name != null : "fx:id=\"name\" was not injected: check your FXML file 'signup-form-view.fxml'.";
-        assert passGenerate != null : "fx:id=\"passGenerate\" was not injected: check your FXML file 'signup-form-view.fxml'.";
-        assert password != null : "fx:id=\"password\" was not injected: check your FXML file 'signup-form-view.fxml'.";
-        assert saveProfile != null : "fx:id=\"saveProfile\" was not injected: check your FXML file 'signup-form-view.fxml'.";
-        assert surname != null : "fx:id=\"surname\" was not injected: check your FXML file 'signup-form-view.fxml'.";
-
+        saveProfile.setOnAction(actionEvent -> {
+            saveProfile.getScene().getWindow().hide();
+            new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+        });
     }
+
 
 }

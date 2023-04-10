@@ -48,7 +48,7 @@ public class DatabaseHandler {
         }
     }
 
-    public int getCount() {
+    public int getCount() { //Запрос выполняется, но как вытащить из него результат? Ни строки ни столбца как бы нету
 
         int res = 0;
         try {
@@ -78,4 +78,3 @@ public class DatabaseHandler {
     }
 
 }
-//Rfr
