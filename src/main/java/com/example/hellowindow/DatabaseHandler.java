@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Properties;
 
 
@@ -121,7 +122,7 @@ public class DatabaseHandler {
             prSt.setInt(2, passHash);
             this.dbOutput = prSt.executeQuery();
 
-            if (this.dbOutput.next()) return true;
+            if (this.dbOutput.next()) result = true;
 
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
@@ -131,24 +132,24 @@ public class DatabaseHandler {
         return result;
     }
 
-    public String getUserRecord (String login, int passHash) {
-        StringBuilder sb = new StringBuilder();
-        this.getUser(login, passHash);
+
+    public User getUserRecord() {
+        User user = new User();
         try {
             dbOutput.beforeFirst();
             while (this.dbOutput.next()) {
-                sb.append("id: ").append(dbOutput.getInt(1));
-                sb.append(", firstName: ").append(dbOutput.getString(2));
-                sb.append(", lastName: ").append(dbOutput.getString(3));
-                sb.append(", email: ").append(dbOutput.getString(4)).append("\n");
-        }
+                user.setId(dbOutput.getInt(1));
+                user.setFirstname(dbOutput.getString(2));
+                user.setLastname(dbOutput.getString(3));
+                user.setEmail(dbOutput.getString(4));
+            }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
         }
         this.close();
-        return sb.toString();
+        return user;
     }
 
 }

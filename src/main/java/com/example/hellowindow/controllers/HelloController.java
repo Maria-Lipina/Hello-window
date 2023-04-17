@@ -1,13 +1,9 @@
 package com.example.hellowindow.controllers;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import com.example.hellowindow.Auth;
-import com.example.hellowindow.DatabaseHandler;
-import com.example.hellowindow.User;
 import com.example.hellowindow.ViewLoader;
 import com.example.hellowindow.animation.Shake;
 import javafx.fxml.FXML;
@@ -39,14 +35,16 @@ public class HelloController {
     @FXML
     private Button signUp;
 
+
     @FXML
     void initialize() {
+
         signIn.setOnAction(actionEvent -> {
 
             String login = enterLogin.getText().trim();
             int authHash = enterPassword.getText().trim().hashCode();
 
-            if (!login.equals("") && authHash != 0 && new Auth().authCheck(login, authHash)) {
+            if (!login.equals("") && authHash != 0 && Auth.getInstance().authCheck(login, authHash)) {
                 signIn.getScene().getWindow().hide();
                 new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
 

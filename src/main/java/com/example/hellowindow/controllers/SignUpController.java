@@ -41,12 +41,13 @@ public class SignUpController {
     @FXML
     private TextField surname;
 
+
     @FXML
     void initialize() {
         saveProfile.setOnAction(actionEvent -> {
 
             if (generatePassword != null && generatePassword.isSelected()) {
-                String pass = new Auth().passGen(8);
+                String pass = Auth.getInstance().passGen(8);
                 System.out.println(pass);
                 new DatabaseHandler().addUser(
                         name.getText(), surname.getText(), email.getText(), pass.hashCode());

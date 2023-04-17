@@ -4,6 +4,7 @@ package com.example.hellowindow.controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.example.hellowindow.Auth;
 import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -25,6 +26,7 @@ public class AllUsersController {
 
     @FXML
     private Button logOut1;
+
 
     @FXML
     void initialize() {

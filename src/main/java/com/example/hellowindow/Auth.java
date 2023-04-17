@@ -1,15 +1,40 @@
 package com.example.hellowindow;
 
 import java.security.SecureRandom;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Auth {
 
+    private DatabaseHandler dbh;
+    private User inSession;
+    private LocalDateTime startSession;
+    private static Auth SESSION;
+
+    private Auth(){ }
+
+    public static Auth getInstance() {
+        if (SESSION == null) {
+            synchronized (Auth.class) {
+                if (SESSION == null) {
+                    SESSION = new Auth();
+                }
+            }
+        }
+        return SESSION;
+    }
+
+
+
     public boolean authCheck (String login, int authHash) {
-        return new DatabaseHandler().getUser(login, authHash);
+        dbh = new DatabaseHandler();
+        boolean result = dbh.getUser(login, authHash);
+        if (result) this.setSession();
+        return result;
     }
 
     public String passGen(int len){
@@ -22,4 +47,12 @@ public class Auth {
                 .collect(Collectors.joining());
     }
 
+    private void setSession() {
+        inSession = dbh.getUserRecord();
+        startSession = LocalDateTime.now();
+    }
+
+    public String getNameInSession(){
+        return inSession.getFirstname();
+    }
 }

@@ -12,7 +12,7 @@
    <children>
       <AnchorPane layoutY="100.0" prefHeight="300.0" prefWidth="700.0" style="-fx-background-color: #002e4a;">
          <children>
-            <Text fill="#e0bf63" layoutX="91.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Java FX">
+            <Text fx:id="welcome" fill="#e0bf63" layoutX="91.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Java FX" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
                <font>
                   <Font name="Bodoni MT" size="58.0" />
                </font>

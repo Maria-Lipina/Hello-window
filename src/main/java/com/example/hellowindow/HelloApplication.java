@@ -14,10 +14,6 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        String user = new DatabaseHandler().getUserRecord("MARY.SMITH@sakilacustomer.org", -1414346094);
-        System.out.println(user);
-
-
-//        launch();
+        launch();
     }
 }
