@@ -49,6 +49,7 @@ public class HelloController {
             if (!login.equals("") && authHash != 0 && new Auth().authCheck(login, authHash)) {
                 signIn.getScene().getWindow().hide();
                 new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+
             } else {
                 new Shake(enterLogin).playAnim();
                 new Shake(enterPassword).playAnim();

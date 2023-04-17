@@ -35,4 +35,5 @@ COLUMNS TERMINATED BY ';' LINES TERMINATED BY '\n'
 UPDATE users
 SET password_hash = ( SELECT u_pass_hash FROM passwords WHERE users.id = passwords.u_id);
 
+DELETE FROM users WHERE id > 600;
 

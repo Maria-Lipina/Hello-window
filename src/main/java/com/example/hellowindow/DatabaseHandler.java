@@ -3,19 +3,16 @@ package com.example.hellowindow;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.util.Properties;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 
 
 public class DatabaseHandler {
 
     Connection dbConnect;
     Properties props;
+
+    ResultSet dbOutput;
 
     public DatabaseHandler () {
 
@@ -66,8 +63,8 @@ public class DatabaseHandler {
             System.out.println(statement);
             PreparedStatement prst = connect().prepareStatement(
                     statement);
-            ResultSet rs = prst.executeQuery();
-            System.out.println("row: " + rs.first());
+            dbOutput = prst.executeQuery();
+            System.out.println("row: " + dbOutput.first());
 
             dbConnect.close();
         } catch (SQLException e) {
@@ -114,26 +111,44 @@ public class DatabaseHandler {
         boolean result = false;
         try {
             String statement = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
-                    props.get("user_table"),
-                    props.get("user_email"), props.get("user_pass_hash"));
+                    this.props.get("user_table"),
+                    this.props.get("user_email"), props.get("user_pass_hash"));
 
-            PreparedStatement prSt = db.prepareStatement(statement);
+            PreparedStatement prSt = db.prepareStatement(statement,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
             prSt.setString(1, login);
             prSt.setInt(2, passHash);
-            ResultSet rs = prSt.executeQuery();
+            this.dbOutput = prSt.executeQuery();
 
-            int counter = 0;
-            while(rs.next()) counter++;
-            if (counter >= 1) {
-                result = true;
-            }
+            if (this.dbOutput.next()) return true;
 
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
         }
-        this.close();
         return result;
     }
+
+    public String getUserRecord (String login, int passHash) {
+        StringBuilder sb = new StringBuilder();
+        this.getUser(login, passHash);
+        try {
+            dbOutput.beforeFirst();
+            while (this.dbOutput.next()) {
+                sb.append("id: ").append(dbOutput.getInt(1));
+                sb.append(", firstName: ").append(dbOutput.getString(2));
+                sb.append(", lastName: ").append(dbOutput.getString(3));
+                sb.append(", email: ").append(dbOutput.getString(4)).append("\n");
+        }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+        this.close();
+        return sb.toString();
+    }
+
 }
