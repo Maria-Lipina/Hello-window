@@ -50,8 +50,8 @@ public class HelloController {
                 signIn.getScene().getWindow().hide();
                 new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
             } else {
-                getMistakeAnimation(enterLogin);
-                getMistakeAnimation(enterPassword);
+                new Shake(enterLogin).playAnim();
+                new Shake(enterPassword).playAnim();
             }
         });
         signUp.setOnAction(actionEvent -> {
@@ -65,13 +65,5 @@ public class HelloController {
         });
 
     }
-
-    void getMistakeAnimation(TextField wrongData) {
-        Shake anim = new Shake(wrongData);
-        anim.playAnim();
-    }
-
-
-
 
 }
