@@ -126,7 +126,6 @@ public class DatabaseHandler {
             while(rs.next()) counter++;
             if (counter >= 1) {
                 result = true;
-                System.out.println("Authorized successfully");
             }
 
         } catch (SQLException e) {

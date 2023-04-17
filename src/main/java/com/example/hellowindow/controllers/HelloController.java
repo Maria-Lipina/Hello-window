@@ -9,6 +9,7 @@ import com.example.hellowindow.Auth;
 import com.example.hellowindow.DatabaseHandler;
 import com.example.hellowindow.User;
 import com.example.hellowindow.ViewLoader;
+import com.example.hellowindow.animation.Shake;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -45,12 +46,13 @@ public class HelloController {
             String login = enterLogin.getText().trim();
             int authHash = enterPassword.getText().trim().hashCode();
 
-            if (!login.equals("") && authHash != 0) {
-                if (new Auth().authCheck(login, authHash)) {
-                    signIn.getScene().getWindow().hide();
-                    new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
-                } else System.out.println("Error. Check login or password and try again");
-            } else System.out.println("Empty login and/or password");
+            if (!login.equals("") && authHash != 0 && new Auth().authCheck(login, authHash)) {
+                signIn.getScene().getWindow().hide();
+                new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+            } else {
+                getMistakeAnimation(enterLogin);
+                getMistakeAnimation(enterPassword);
+            }
         });
         signUp.setOnAction(actionEvent -> {
             signUp.getScene().getWindow().hide();
@@ -63,6 +65,12 @@ public class HelloController {
         });
 
     }
+
+    void getMistakeAnimation(TextField wrongData) {
+        Shake anim = new Shake(wrongData);
+        anim.playAnim();
+    }
+
 
 
 
