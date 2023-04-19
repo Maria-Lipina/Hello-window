@@ -132,7 +132,6 @@ public class DatabaseHandler {
         return result;
     }
 
-
     public User getUserRecord() {
         User user = new User();
         try {
