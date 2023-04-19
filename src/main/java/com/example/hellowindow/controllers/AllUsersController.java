@@ -4,10 +4,11 @@ package com.example.hellowindow.controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.example.hellowindow.Auth;
+import com.example.hellowindow.DatabaseHandler;
 import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class AllUsersController {
@@ -27,6 +28,9 @@ public class AllUsersController {
     @FXML
     private Button logOut1;
 
+    @FXML
+    private Text totalCount;
+
 
     @FXML
     void initialize() {
@@ -45,6 +49,7 @@ public class AllUsersController {
             System.out.println("Profile successfully deleted");
         });
 
+        totalCount.setText(String.format("%s %s", totalCount.getText(), new DatabaseHandler().getCount()));
     }
 
 }

@@ -4,16 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Properties;
 
 
 public class DatabaseHandler {
 
-    Connection dbConnect;
-    Properties props;
+    private Connection dbConnect;
+    private Properties props;
 
-    ResultSet dbOutput;
+    private ResultSet dbOutput;
 
     public DatabaseHandler () {
 
@@ -52,30 +51,21 @@ public class DatabaseHandler {
         }
     }
 
-    public int getCount() { //Запрос выполняется, но как вытащить из него результат? Ни строки ни столбца как бы нету
-
+    public int getCount() {
         int res = 0;
         try {
-            props = new Properties();
-            props.load(Files.newInputStream(
-                    Path.of("src/main/resources/com/example/hellowindow/assets/database.properties")));
-            String statement = String.format("SELECT COUNT(%s) FROM %s",
-                    props.get("user_id"), props.get("user_table"));
-            System.out.println(statement);
             PreparedStatement prst = connect().prepareStatement(
-                    statement);
+                    String.format("SELECT COUNT(%s) FROM %s",
+                            props.get("user_id"), props.get("user_table")));
             dbOutput = prst.executeQuery();
-            System.out.println("row: " + dbOutput.first());
-
+            dbOutput.next();
+            res = dbOutput.getInt(1);
             dbConnect.close();
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-
         return res;
     }
 
