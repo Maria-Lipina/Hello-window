@@ -36,16 +36,16 @@ public class AllUsersController {
     void initialize() {
         backHome.setOnAction(actionEvent -> {
             backHome.getScene().getWindow().hide();
-            new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+            new ViewLoader().loadView("home_view.fxml", new Stage(), getClass());
         });
         logOut1.setOnAction(actionEvent -> {
             logOut1.getScene().getWindow().hide();
-            new ViewLoader().loadView("logout-view.fxml", new Stage(), getClass());
+            new ViewLoader().loadView("logout_view.fxml", new Stage(), getClass());
             System.out.println("Logged out successfully");
         });
         deleteUser1.setOnAction(actionEvent -> {
             deleteUser1.getScene().getWindow().hide();
-            new ViewLoader().loadView("logout-view.fxml", new Stage(), getClass());
+            new ViewLoader().loadView("logout_view.fxml", new Stage(), getClass());
             System.out.println("Profile successfully deleted");
         });
 

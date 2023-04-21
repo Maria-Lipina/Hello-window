@@ -27,7 +27,7 @@ public class HelloController {
     private PasswordField enterPassword;
 
     @FXML
-    private Button seeAllUsers;
+    private Button infoPage;
 
     @FXML
     private Button signIn;
@@ -46,7 +46,7 @@ public class HelloController {
 
             if (!login.equals("") && authHash != 0 && Auth.getInstance().authCheck(login, authHash)) {
                 signIn.getScene().getWindow().hide();
-                new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+                new ViewLoader().loadView("home_view.fxml", new Stage(), getClass());
 
             } else {
                 new Shake(enterLogin).playAnim();
@@ -55,12 +55,11 @@ public class HelloController {
         });
         signUp.setOnAction(actionEvent -> {
             signUp.getScene().getWindow().hide();
-            new ViewLoader().loadView("signup-form-view.fxml", new Stage(), getClass());
-
+            new ViewLoader().loadView("signup_view.fxml", new Stage(), getClass());
         });
-        seeAllUsers.setOnAction(actionEvent -> {
-            seeAllUsers.getScene().getWindow().hide();
-            new ViewLoader().loadView("allusers-view.fxml", new Stage(), getClass());
+        infoPage.setOnAction(actionEvent -> {
+            infoPage.getScene().getWindow().hide();
+            new ViewLoader().loadView("info_view.fxml", new Stage(), getClass());
         });
 
     }

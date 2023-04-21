@@ -56,7 +56,7 @@ public class SignUpController {
                         name.getText(), surname.getText(), email.getText(), password.getText().hashCode());
             }
             saveProfile.getScene().getWindow().hide();
-            new ViewLoader().loadView("home-view.fxml", new Stage(), getClass());
+            new ViewLoader().loadView("home_view.fxml", new Stage(), getClass());
         });
     }
 
