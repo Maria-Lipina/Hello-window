@@ -9,7 +9,11 @@ import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SignUpController {
@@ -33,7 +37,10 @@ public class SignUpController {
     private CheckBox generatePassword;
 
     @FXML
-    private TextField password;
+    private PasswordField password;
+
+    @FXML
+    private Text clipboardSignal;
 
     @FXML
     private Button saveProfile;
@@ -44,19 +51,38 @@ public class SignUpController {
 
     @FXML
     void initialize() {
-        saveProfile.setOnAction(actionEvent -> {
 
-            if (generatePassword != null && generatePassword.isSelected()) {
+        generatePassword.setOnAction(actionEvent -> {
+            if (generatePassword.isSelected()) {
                 String pass = Auth.getInstance().passGen(8);
                 System.out.println(pass);
-                new DatabaseHandler().addUser(
-                        name.getText(), surname.getText(), email.getText(), pass.hashCode());
-            } else {
-                new DatabaseHandler().addUser(
-                        name.getText(), surname.getText(), email.getText(), password.getText().hashCode());
+                password.setText(pass);
+
+                final Clipboard clipboard = Clipboard.getSystemClipboard();
+                final ClipboardContent content = new ClipboardContent();
+                content.putString(password.getText());
+                clipboard.setContent(content);
+                System.out.println("Буфер обмена " + content.getString());
+                clipboardSignal.setVisible(true);
             }
+            else {
+                password.setText("");
+                clipboardSignal.setVisible(false);
+            }
+        });
+
+
+
+        saveProfile.setOnAction(actionEvent -> {
+            System.out.println(" должно при сохранении пароля:" + password.getText());
+            new DatabaseHandler().addUser(
+                    name.getText(), surname.getText(), email.getText(), password.getText().hashCode());
             saveProfile.getScene().getWindow().hide();
-            new ViewLoader().loadView("home_view.fxml", new Stage(), getClass());
+            if (keepSigned.isSelected()) {
+                new ViewLoader().loadView("home_view.fxml", new Stage(), getClass());
+            } else {
+                new ViewLoader().loadView("logout_view.fxml", new Stage(), getClass());
+            }
         });
     }
 
