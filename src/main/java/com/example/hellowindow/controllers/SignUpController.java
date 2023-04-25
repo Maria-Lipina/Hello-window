@@ -43,39 +43,57 @@ public class SignUpController {
     private Text clipboardSignal;
 
     @FXML
+    private Text mailDoublicateSignal;
+
+    @FXML
     private Button saveProfile;
 
     @FXML
     private TextField surname;
 
+    @FXML
+    private Button signIn;
 
     @FXML
     void initialize() {
 
         generatePassword.setOnAction(actionEvent -> {
-            if (generatePassword.isSelected()) {
-                String pass = Auth.getInstance().passGen(8);
-                System.out.println(pass);
-                password.setText(pass);
-
-                final Clipboard clipboard = Clipboard.getSystemClipboard();
-                final ClipboardContent content = new ClipboardContent();
-                content.putString(password.getText());
-                clipboard.setContent(content);
-                System.out.println("Буфер обмена " + content.getString());
-                clipboardSignal.setVisible(true);
-            }
-            else {
-                password.setText("");
-                clipboardSignal.setVisible(false);
-            }
+            generatePassword();
         });
 
-
-
         saveProfile.setOnAction(actionEvent -> {
-            System.out.println(" должно при сохранении пароля:" + password.getText());
-            new DatabaseHandler().addUser(
+            saveProfile();
+        });
+
+        signIn.setOnAction(actionEvent -> {
+            signIn.getScene().getWindow().hide();
+            new ViewLoader().loadView("logout_view.fxml", new Stage(), getClass());
+        });
+    }
+
+    private void generatePassword() {
+        final Clipboard clipboard = Clipboard.getSystemClipboard();
+        final ClipboardContent content = new ClipboardContent();
+        if (generatePassword.isSelected()) {
+            String pass = Auth.getInstance().passGen(8);
+            password.setText(pass);
+
+            content.putString(password.getText());
+            clipboard.setContent(content);
+            System.out.println("Буфер обмена " + content.getString());
+            clipboardSignal.setVisible(true);
+        }
+        else {
+            password.setText("");
+            clipboardSignal.setVisible(false);
+            clipboard.clear();
+        }
+    }
+
+    private void saveProfile() {
+        DatabaseHandler db = new DatabaseHandler();
+        if (!db.isUser(email.getText())) {
+            db.addUserRecord(
                     name.getText(), surname.getText(), email.getText(), password.getText().hashCode());
             saveProfile.getScene().getWindow().hide();
             if (keepSigned.isSelected()) {
@@ -83,8 +101,9 @@ public class SignUpController {
             } else {
                 new ViewLoader().loadView("logout_view.fxml", new Stage(), getClass());
             }
-        });
+        }
+        else {
+            mailDoublicateSignal.setVisible(true);
+        }
     }
-
-
 }

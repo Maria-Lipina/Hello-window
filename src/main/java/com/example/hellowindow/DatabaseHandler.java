@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Properties;
 
 
@@ -17,7 +18,7 @@ public class DatabaseHandler {
     public DatabaseHandler () {
 
     }
-    public Connection connect() {
+    private Connection connect() {
         try {
             if (dbConnect == null || dbConnect.isClosed()) {
                 props = new Properties();
@@ -25,7 +26,6 @@ public class DatabaseHandler {
                         Path.of("src/main/resources/com/example/hellowindow/assets/database.properties")));
                 dbConnect = DriverManager.getConnection(
                         (String) props.get("url"), (String) props.get("db_user"), (String) props.get("password"));
-                System.out.println("Connected to MySQL");
                 } }
                 catch (SQLException e) {
                     System.out.println("SQLException: " + e.getMessage());
@@ -38,11 +38,10 @@ public class DatabaseHandler {
         return dbConnect;
     }
 
-    public void close() {
+    private void close() {
         try {
             if (!dbConnect.isClosed()) {
                 dbConnect.close();
-                System.out.println("Exited from MySQL");
             }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
@@ -51,7 +50,7 @@ public class DatabaseHandler {
         }
     }
 
-    public int getCount() {
+    private int getCount() {
         int res = 0;
         try {
             PreparedStatement prst = connect().prepareStatement(
@@ -60,7 +59,6 @@ public class DatabaseHandler {
             dbOutput = prst.executeQuery();
             dbOutput.next();
             res = dbOutput.getInt(1);
-            dbConnect.close();
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
@@ -69,17 +67,21 @@ public class DatabaseHandler {
         return res;
     }
 
-    public void addUser (String name, String lastname, String email, int passHash) {
-        Connection db = this.connect();
+    public int getUserCount() {
+        this.connect();
+        int res = this.getCount();
+        this.close();
+        return res;
+    }
+
+    private void addUser(String name, String lastname, String email, int passHash){
         try {
             String statement = String.format("INSERT INTO %s (%s, %s, %s, %s) VALUES (?, ?, ?, ?)",
                     props.get("user_table"),
                     props.get("user_firstname"), props.get("user_lastname"),
                     props.get("user_email"), props.get("user_pass_hash"));
 
-            System.out.println(statement);
-
-            PreparedStatement prSt = db.prepareStatement(statement);
+            PreparedStatement prSt = dbConnect.prepareStatement(statement);
             prSt.setString(1, name);
             prSt.setString(2, lastname);
             prSt.setString(3, email);
@@ -87,32 +89,36 @@ public class DatabaseHandler {
 
             prSt.executeUpdate();
 
-            System.out.println("User added to DB");
-
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
         }
+    }
+    public void addUserRecord(String name, String lastname, String email, int passHash) {
+        this.connect();
+        this.addUser(name, lastname, email, passHash);
         this.close();
     }
 
-    public boolean getUser(String login, int passHash) {
-        Connection db = this.connect();
+    private boolean findUser0(String login, int passHash) {
         boolean result = false;
         try {
             String statement = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
                     this.props.get("user_table"),
                     this.props.get("user_email"), props.get("user_pass_hash"));
 
-            PreparedStatement prSt = db.prepareStatement(statement,
+            PreparedStatement prSt = dbConnect.prepareStatement(statement,
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             prSt.setString(1, login);
             prSt.setInt(2, passHash);
             this.dbOutput = prSt.executeQuery();
 
-            if (this.dbOutput.next()) result = true;
+            if (this.dbOutput.next()) {
+                result = true;
+                dbOutput.beforeFirst();
+            }
 
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
@@ -122,11 +128,43 @@ public class DatabaseHandler {
         return result;
     }
 
-    public User getUserRecord() {
+    private int findUser(String login) {
+        int result = 0;
+        try {
+            String statement = String.format("SELECT * FROM %s WHERE %s=?",
+                    this.props.get("user_table"), this.props.get("user_email"));
+
+            PreparedStatement prSt = dbConnect.prepareStatement(statement,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            prSt.setString(1, login);
+            this.dbOutput = prSt.executeQuery();
+            if (this.dbOutput.next()) {
+                result = dbOutput.getInt(5);
+                dbOutput.beforeFirst();
+            }
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+        return result;
+    }
+
+    public boolean isUser(String login, int passHash) {
+        this.connect();
+        return findUser(login) == passHash;
+    }
+
+    public boolean isUser(String login) {
+        this.connect();
+        return findUser(login) != 0;
+    }
+
+    private User makeRecord() {
         User user = new User();
         try {
-            dbOutput.beforeFirst();
-            while (this.dbOutput.next()) {
+            if(this.dbOutput.next()) {
                 user.setId(dbOutput.getInt(1));
                 user.setFirstname(dbOutput.getString(2));
                 user.setLastname(dbOutput.getString(3));
@@ -137,8 +175,27 @@ public class DatabaseHandler {
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
         }
+        return user;
+    }
+
+    public User getUserRecord() {
+        this.connect();
+        User user = makeRecord();
         this.close();
         return user;
+    }
+
+
+
+
+    public ArrayList<User> getAllUsers(){
+        this.connect();
+        ArrayList<User> result = new ArrayList<>(this.getCount());
+        for (User u: result) {
+            u = this.makeRecord();
+        }
+        this.close();
+        return result;
     }
 
 }

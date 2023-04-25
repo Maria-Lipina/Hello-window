@@ -49,7 +49,7 @@ public class AllUsersController {
             System.out.println("Profile successfully deleted");
         });
 
-        totalCount.setText(String.format("%s %s", totalCount.getText(), new DatabaseHandler().getCount()));
+        totalCount.setText(String.format("%s %s", totalCount.getText(), new DatabaseHandler().getUserCount()));
     }
 
 }

@@ -38,7 +38,6 @@ public class InfoController {
         signIn.setOnAction(actionEvent -> {
             signIn.getScene().getWindow().hide();
             new ViewLoader().loadView("logout_view.fxml", new Stage(), getClass());
-            System.out.println("Returned back to sign In form");
         });
         signUp.setOnAction(actionEvent -> {
             signUp.getScene().getWindow().hide();

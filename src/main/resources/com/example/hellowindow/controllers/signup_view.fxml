@@ -45,7 +45,15 @@
                   <Font size="14.0" />
                </font>
             </CheckBox>
-            <Text fx:id="clipboardSignal" fill="#f53c3c" layoutX="572.0" layoutY="165.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Copied!" visible="false">
+            <Text fx:id="mailDoublicateSignal" fill="#f53c3c" layoutX="417.0" layoutY="29.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="We have this email in system" visible="false">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <effect>
+                  <Glow />
+               </effect>
+            </Text>
+            <Text fx:id="clipboardSignal" fill="#f53c3c" layoutX="582.0" layoutY="165.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Copied!" visible="false">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -60,5 +68,10 @@
             <Font name="Bodoni MT Italic" size="60.0" />
          </font>
       </Label>
+      <Button fx:id="signIn" layoutX="27.0" layoutY="34.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="117.0" text="Back to sign in">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
