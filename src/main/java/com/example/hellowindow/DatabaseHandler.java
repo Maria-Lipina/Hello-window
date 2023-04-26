@@ -53,12 +53,15 @@ public class DatabaseHandler {
     private int getCount() {
         int res = 0;
         try {
-            PreparedStatement prst = connect().prepareStatement(
+            PreparedStatement prst = dbConnect.prepareStatement(
                     String.format("SELECT COUNT(%s) FROM %s",
-                            props.get("user_id"), props.get("user_table")));
+                            props.get("user_id"), props.get("user_table")),
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
             dbOutput = prst.executeQuery();
             dbOutput.next();
             res = dbOutput.getInt(1);
+            dbOutput.beforeFirst();
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
@@ -101,33 +104,6 @@ public class DatabaseHandler {
         this.close();
     }
 
-    private boolean findUser0(String login, int passHash) {
-        boolean result = false;
-        try {
-            String statement = String.format("SELECT * FROM %s WHERE %s=? AND %s=?",
-                    this.props.get("user_table"),
-                    this.props.get("user_email"), props.get("user_pass_hash"));
-
-            PreparedStatement prSt = dbConnect.prepareStatement(statement,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            prSt.setString(1, login);
-            prSt.setInt(2, passHash);
-            this.dbOutput = prSt.executeQuery();
-
-            if (this.dbOutput.next()) {
-                result = true;
-                dbOutput.beforeFirst();
-            }
-
-        } catch (SQLException e) {
-            System.out.println("SQLException: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("VendorError: " + e.getErrorCode());
-        }
-        return result;
-    }
-
     private int findUser(String login) {
         int result = 0;
         try {
@@ -164,12 +140,12 @@ public class DatabaseHandler {
     private User makeRecord() {
         User user = new User();
         try {
-            if(this.dbOutput.next()) {
-                user.setId(dbOutput.getInt(1));
-                user.setFirstname(dbOutput.getString(2));
-                user.setLastname(dbOutput.getString(3));
-                user.setEmail(dbOutput.getString(4));
-            }
+           if(this.dbOutput.next()) {
+               user.setId(dbOutput.getInt(1));
+               user.setFirstname(dbOutput.getString(2));
+               user.setLastname(dbOutput.getString(3));
+               user.setEmail(dbOutput.getString(4));
+           }
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
@@ -185,14 +161,33 @@ public class DatabaseHandler {
         return user;
     }
 
+    private void getAllUsers() {
+
+        String statement = String.format("SELECT %s, %s, %s, %s FROM %s",
+                this.props.get("user_id"),
+                this.props.get("user_firstname"),
+                this.props.get("user_lastname"),
+                this.props.get("user_email"),
+                this.props.get("user_table"));
+
+        try {
+            Statement stm = dbConnect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            dbOutput = stm.executeQuery(statement);
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+    }
 
 
-
-    public ArrayList<User> getAllUsers(){
+    public User[] getAllUsersRecord(){
         this.connect();
-        ArrayList<User> result = new ArrayList<>(this.getCount());
-        for (User u: result) {
-            u = this.makeRecord();
+        int capacity = this.getCount();
+        this.getAllUsers();
+        User[] result = new User[capacity];
+        for (int i = 0; i < capacity; i++) {
+            result[i] = makeRecord();
         }
         this.close();
         return result;

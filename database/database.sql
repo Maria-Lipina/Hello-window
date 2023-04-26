@@ -1,6 +1,6 @@
--- DROP DATABASE IF EXISTS jfx; #Java FX first application datadase
--- CREATE DATABASE jfx;
--- USE jfx;
+DROP DATABASE IF EXISTS jfx; #Java FX first application datadase
+CREATE DATABASE jfx;
+USE jfx;
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -36,4 +36,5 @@ UPDATE users
 SET password_hash = ( SELECT u_pass_hash FROM passwords WHERE users.id = passwords.u_id);
 
 DELETE FROM users WHERE id > 600;
+
 
