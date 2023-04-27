@@ -1,9 +1,5 @@
 package com.example.hellowindow;
 
-import java.security.SecureRandom;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 public class User {
     enum Role {
         USER

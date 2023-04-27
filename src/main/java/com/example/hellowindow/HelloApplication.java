@@ -13,9 +13,6 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-//        launch();
-
-        var test = new DatabaseHandler().getAllUsersRecord();
-        System.out.println(test.length);
+        launch();
     }
 }

@@ -1,8 +1,10 @@
 package com.example.hellowindow.controllers;
 
+import java.io.FileReader;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.example.hellowindow.FileHandler;
 import com.example.hellowindow.ViewLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,12 +46,9 @@ public class InfoController {
             new ViewLoader().loadView("signup_view.fxml", new Stage(), getClass());
         });
 
-        aboutUsTextOut.setText("""
-                Есть много вариантов Lorem Ipsum, но большинство из них имеет не всегда приемлемые модификации, например, юмористические вставки или слова, которые даже отдалённо не напоминают латынь. Если вам нужен Lorem Ipsum для серьёзного проекта, вы наверняка не хотите какой-нибудь шутки, скрытой в середине абзаца. Также все другие известные генераторы Lorem Ipsum используют один и тот же текст, который они просто повторяют, пока не достигнут нужный объём. Это делает предлагаемый здесь генератор единственным настоящим Lorem Ipsum генератором. Он использует словарь из более чем 200 латинских слов, а также набор моделей предложений. В результате сгенерированный Lorem Ipsum выглядит правдоподобно, не имеет повторяющихся абзацей или "невозможных" слов.
-                """);
+        aboutUsTextOut.setText(new FileHandler().getDescription());
 
 
     }
-
 
 }
